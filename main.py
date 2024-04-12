@@ -41,6 +41,9 @@ class Person:
 
     def set_things(self, things):
         self.things.extend(things)
+        self.set_final_protection()
+        self.set_final_attack()
+        self.set_final_health()
 
     def set_final_protection(self):
         """
@@ -52,6 +55,14 @@ class Person:
         things_defense = sum([thing.defense for thing in self.things])
         self.final_protection = self.base_defense + things_defense
 
+    def set_final_attack(self):
+        things_attack = sum([thing.attack for thing in self.things])
+        self.final_attack = self.base_attack + things_attack
+
+    def set_final_health(self):
+        things_health = sum([thing.health for thing in self.things])
+        self.final_health = self.base_health + things_health
+
     def receive_attack_damage(self, attack_damage):
         """
         Вычисляет оставшееся здоровье.
@@ -60,7 +71,6 @@ class Person:
         (HitPoints - (attack_damage - attack_damagefinalProtection)),
         где finalProtection - коэффициент защиты в десятичном виде;
         """
-        self.set_final_protection()
         final_damage = attack_damage * (1 - self.final_protection())
         self.health -= final_damage
         return final_damage
@@ -96,4 +106,16 @@ for i in range(randint(2, 5)):
     health = randint(0, 100)/100
     things_list.append(Thing(name, defense, attack, health))
     print(things_list)
-    
+
+while len(persons_list) > 1:
+    attacker = choice(persons_list)
+    defense_pool = persons_list[:]
+    defense_pool.remove(attacker)
+    defender = choice(defense_pool)
+    damage = defender.receive_attack_damage(attacker.final_attack)
+    print(f'{attacker.name} наносит удар по {defender.name} на {damage} урона.')
+    if defender.name <= 0:
+        print(f'{defender.name} покидает арену.')
+        persons_list.remove(defender)
+
+print(f'Побеждает {persons_list[0]}.')
