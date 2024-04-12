@@ -1,7 +1,10 @@
 """Игра Арена."""
 
 from random import randint, choice
+from colorama import init, Fore
 
+
+init()
 
 class Thing:
     """
@@ -193,16 +196,16 @@ def main():
         else:
             print(f'{attacker.name} наносит удар по {defender.name} на {damage} урона.')
         if defender.health <= 0:
-            print(f'{defender.name} покидает арену.')
+            print(Fore.RED + f'{defender.name} покидает арену.' + Fore.RESET)
             persons_list.remove(defender)
         if flag_event3 and defender in persons_list:
             damage = defender.receive_attack_damage(second_attacker.final_attack)
             print(f'{second_attacker.name} решает присоединиться и наносит {damage} урона.')
             if defender.health <= 0:
-                print(f'{defender.name} покидает арену.')
+                print(Fore.RED + f'{defender.name} покидает арену.' + Fore.RESET)
                 persons_list.remove(defender)
 
-    print(f'Побеждает {persons_list[0].name}.')
+    print(Fore.GREEN + f'Побеждает {persons_list[0].name}.')
 
 if __name__ == '__main__':
     main()
