@@ -113,5 +113,9 @@ def main():
             person = Paladin(name, health, base_attack, base_defense)
 
         persons_list.append(person)
+    
+    for person in persons_list:
+        things = [choice(things_list) for _ in range(randint(1, 4))]
+        person.things = things
 
 main()
