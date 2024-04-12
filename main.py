@@ -38,10 +38,11 @@ class Person:
 
     def __init__(self, name, health, base_attack, base_defense):
         self.name = name
-        self.health = self.health_modifier * health
+        self.base_health = self.health_modifier * health
         self.base_attack = base_attack * self.attack_modifier
         self.base_defense = base_defense * self.defense_modifier  # %.
         self.things = []
+        self.set_things(self.things)
 
     def set_things(self, things):
         self.things.extend(things)
@@ -65,7 +66,7 @@ class Person:
 
     def set_final_health(self):
         things_health = sum([thing.health for thing in self.things])
-        self.final_health = self.base_health + things_health
+        self.health = self.base_health + things_health
 
     def receive_attack_damage(self, attack_damage):
         """
@@ -75,7 +76,7 @@ class Person:
         (HitPoints - (attack_damage - attack_damagefinalProtection)),
         где finalProtection - коэффициент защиты в десятичном виде;
         """
-        final_damage = attack_damage * (1 - self.final_protection())
+        final_damage = int(attack_damage * (1 - self.final_protection))
         self.health -= final_damage
         return final_damage
 
@@ -113,9 +114,9 @@ def main():
         things_list.append(thing)
     
     for _ in range(10):
-        health = randint(0, 100)
-        base_attack = randint(0, 100)
-        base_defense = randint(0, 100)
+        health = randint(50, 100)
+        base_attack = randint(50, 100)
+        base_defense = randint(0, 10) / 100
 
         if randint(0, 1) == 1:
             name = choice(Warrior.default_names)
@@ -128,7 +129,7 @@ def main():
     
     for person in persons_list:
         things = [choice(things_list) for _ in range(randint(1, 4))]
-        person.things = things
+        person.set_things(things)
 
     while len(persons_list) > 1:
         attacker = choice(persons_list)
@@ -137,11 +138,11 @@ def main():
         defender = choice(defense_pool)
         damage = defender.receive_attack_damage(attacker.final_attack)
         print(f'{attacker.name} наносит удар по {defender.name} на {damage} урона.')
-        if defender.name <= 0:
+        if defender.health <= 0:
             print(f'{defender.name} покидает арену.')
             persons_list.remove(defender)
 
-    print(f'Побеждает {persons_list[0]}.')
+    print(f'Побеждает {persons_list[0].name}.')
 
 if __name__ == '__main__':
     main()
