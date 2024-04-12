@@ -1,9 +1,13 @@
 from random import randint, choice
 
 class Thing:
-    """Вещи: class Thing Класс содержит в себе следующие параметры - название,
+    """
+    Вещи
+    
+    Класс содержит в себе следующие параметры - название,
     процент защиты, атаку и жизнь; Это могут быть предметы одежды, магические
-    кольца, всё что угодно)"""
+    кольца, всё что угодно)
+    """
     default_names = ['thing1, thing2, thing3, thing4, thing5']
 
     def __init__ (self, name, defense, attack, health):
@@ -12,25 +16,6 @@ class Thing:
         self.attack = attack
         self.health = health
 
-#Алгоритм проведения боя
-def main():
-    pass
-    """
-    Шаг 1 - создаем произвольное количество вещей с различными параметрами,
-    процент защиты не должен превышать 10%(0.1). Сортируем по проценту защиты,
-    по возрастанию;
-    """
-things_list = []
-
-for i in range(randint(2, 5)):
-    name = choice(Thing.default_names)
-    defense = randint(0, 10)/100
-    attack = randint(0, 100)/100
-    health = randint(0, 100)/100
-    things_list.append(Thing(name, defense, attack, health))
-    print(things_list)
-
-    
 class Person:
     """
     Класс персонажа.
@@ -86,12 +71,47 @@ class Person:
 
 class Paladin(Person):
     """Паладин."""
-
+    default_names = ['Paladin1, Paladin2, Paladin3, Paladin4, Paladin5']
     health_modifier = 1
     defense_modifier = 1
 
 
 class Warrior(Person):
     """Воин."""
+    default_names = ['Warrior1, Warrior2, Warrior3, Warrior4, Warrior5']
 
     attack_modifier = 1
+
+#Алгоритм проведения боя
+def main():
+    """
+    Шаг 1 - создаем произвольное количество вещей с различными параметрами,
+    процент защиты не должен превышать 10%(0.1). Сортируем по проценту защиты,
+    по возрастанию;
+    """
+    things_list = []
+    persons_list = []
+
+    for _ in range(randint(10, 20)):
+        name = choice(Thing.default_names)
+        defense = randint(0, 10)/100
+        attack = randint(0, 100)/100
+        health = randint(0, 100)/100
+        thing = Thing(name, defense, attack, health)
+        things_list.append(thing)
+    
+    for _ in range(10):
+        health = randint(0, 100)
+        base_attack = randint(0, 100)
+        base_defense = randint(0, 100)
+
+        if randint(0, 1) == 1:
+            name = choice(Warrior.default_names)
+            person = Warrior(name, health, base_attack, base_defense)
+        else:
+            name = choice(Paladin.default_names)
+            person = Paladin(name, health, base_attack, base_defense)
+
+        persons_list.append(person)
+
+main()
