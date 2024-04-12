@@ -50,6 +50,13 @@ class Person:
         self.set_final_attack()
         self.set_final_health()
 
+    def remove_thing(self):
+        thing = self.things.pop()
+        self.set_final_protection()
+        self.set_final_attack()
+        self.set_final_health()  
+        return thing     
+
     def set_final_protection(self):
         """
         Вычисляет защиту.
@@ -132,15 +139,39 @@ def main():
         person.set_things(things)
 
     while len(persons_list) > 1:
+        event = choice([1, 2, 3])
+        flag_event3 = False
         attacker = choice(persons_list)
-        defense_pool = persons_list[:]
-        defense_pool.remove(attacker)
-        defender = choice(defense_pool)
+        if event == 1:
+            defender = attacker
+        else:
+            defense_pool = persons_list[:]
+            defense_pool.remove(attacker)
+            defender = choice(defense_pool)
+            if event == 3:
+                defense_pool.remove(defender)
+                if len(defense_pool) > 0:
+                    second_attacker = choice(defense_pool)
+                    flag_event3 = True
+        if event == 2:
+            person = choice([attacker, defender])
+            if len(person.things) > 0:
+                thing = person.remove_thing()
+                print(f'Подул ветер и {person.name} теряет вещь: {thing.name}.')
         damage = defender.receive_attack_damage(attacker.final_attack)
-        print(f'{attacker.name} наносит удар по {defender.name} на {damage} урона.')
+        if event == 1:
+            print(f'{attacker.name} неуклюже ранит себя на {damage} урона.')
+        else:
+            print(f'{attacker.name} наносит удар по {defender.name} на {damage} урона.')
         if defender.health <= 0:
             print(f'{defender.name} покидает арену.')
             persons_list.remove(defender)
+        if flag_event3 and defender in persons_list:
+            damage = defender.receive_attack_damage(second_attacker.final_attack)
+            print(f'{second_attacker.name} решает присоединиться и наносит {damage} урона.')
+            if defender.health <= 0:
+                print(f'{defender.name} покидает арену.')
+                persons_list.remove(defender)
 
     print(f'Побеждает {persons_list[0].name}.')
 
