@@ -2,9 +2,12 @@
 
 from random import randint, choice
 from colorama import init, Fore
+from faker import Faker
 
 
 init()
+fake = Faker()
+
 
 class Thing:
     """
@@ -158,10 +161,10 @@ def main():
         base_defense = randint(0, 10) / 100
 
         if randint(0, 1) == 1:
-            name = choice(Warrior.default_names)
+            name = fake.first_name_male()
             person = Warrior(name, health, base_attack, base_defense)
         else:
-            name = choice(Paladin.default_names)
+            name = fake.first_name_female()
             person = Paladin(name, health, base_attack, base_defense)
 
         persons_list.append(person)
@@ -206,6 +209,7 @@ def main():
                 persons_list.remove(defender)
 
     print(Fore.GREEN + f'Побеждает {persons_list[0].name}.')
+
 
 if __name__ == '__main__':
     main()
