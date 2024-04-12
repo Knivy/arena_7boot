@@ -8,7 +8,7 @@ class Thing:
     процент защиты, атаку и жизнь; Это могут быть предметы одежды, магические
     кольца, всё что угодно)
     """
-    default_names = ['thing1, thing2, thing3, thing4, thing5']
+    default_names = ['thing1', 'thing2', 'thing3', 'thing4', 'thing5']
 
     def __init__ (self, name, defense, attack, health):
         self.name = name
@@ -90,14 +90,14 @@ class Person:
 
 class Paladin(Person):
     """Паладин."""
-    default_names = ['Paladin1, Paladin2, Paladin3, Paladin4, Paladin5']
+    default_names = ['Paladin1', 'Paladin2', 'Paladin3', 'Paladin4', 'Paladin5']
     health_modifier = 1
     defense_modifier = 1
 
 
 class Warrior(Person):
     """Воин."""
-    default_names = ['Warrior1, Warrior2, Warrior3, Warrior4, Warrior5']
+    default_names = ['Warrior1', 'Warrior2', 'Warrior3', 'Warrior4', 'Warrior5']
 
     attack_modifier = 1
 
